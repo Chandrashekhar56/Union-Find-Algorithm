@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+<body>
+<script type="text/javascript">
+  var total_vertices,total_edges,graph_edge,x,m,n;
+  function create_Graph(total_vertices,total_edges)
+  {
+  	  total_vertices = total_vertices;
+  		total_edges = total_edges;
+  		graph_edge = new Array(total_edges);
+  		for (x = 0; x < total_edges; x++)
+  		{
+  			graph_edge[x] = new Graph_Edge();
+  		}
+  }
+  class Graph_Edge
+  {
+  	constructor()
+  	{
+  		this.destination_vertex=0;
+      this.source_vertex=0;
+  	}
+  }
+  class subset
+  {
+  	constructor()
+  	{
+  		this.p=0;
+  		this.r=0;
+  	}
+  }
+  function search(arr,z)
+  {
+  	if (arr[z].p != z)
+  			arr[z].p = search(arr, arr[z].p);
+  	return arr[z].p;
+  }
+
+  function function_of_union(arr,m,n)
+  {
+  	var  m_root = search(arr, m);
+  	var  n_root = search(arr, n);
+
+  		if (arr[m_root].r < arr[n_root].r)
+  			arr[m_root].p = n_root;
+  		else if (arr[n_root].r < arr[m_root].r)
+  			arr[n_root].p = m_root;
+  		else {
+  			arr[m_root].p = n_root;
+  			arr[n_root].r++;
+  		}
+  }
+  function function_of_find_iscycle()
+  {
+  		var arr = new Array(total_vertices);
+  		for (x = 0; x < total_vertices;x++)
+      {
+
+  			arr[x] = new subset();
+  			arr[x].p = x;
+  			arr[x].r = 0;
+  		}
+
+  		for (var x = 0; x <total_edges; x++)
+      {
+  			  m = search(arr, graph_edge[x].source_vertex);
+  			  n = search(arr,graph_edge[x].destination_vertex);
+  			if (m == n)
+  				return 1;
+  			function_of_union(arr, m, n);
+  		}
+  		return 0;
+  }
+
+  		total_vertices = 3, total_edges = 3;
+  		create_Graph(total_vertices,total_edges);
+
+  		graph_edge[0].source_vertex = 0;
+  		graph_edge[0].destination_vertex = 1;
+
+  		graph_edge[1].source_vertex = 1;
+  		graph_edge[1].destination_vertex = 2;
+
+  		graph_edge[2].source_vertex = 0;
+  		graph_edge[2].destination_vertex = 2;
+
+  		if (function_of_find_iscycle() == 1)
+  			document.write("cycle is present in graph");
+  		else
+  			document.write(
+  				"cycle is not present in graph");
+</script>
+</body>
+</html>
